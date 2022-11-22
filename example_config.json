@@ -1,0 +1,23 @@
+{
+    "log": {
+        "level": 2,
+        "file": "log.log"
+    },
+    "twitter": {
+        "username": "<twitter_username_no_@>",
+        "consumer_key": "<twitter_consumer_key>",
+        "consumer_secret": "<twitter_consumer_secret>",
+        "access_key": "<twitter_access_key>",
+        "access_secret": "<twitter_access_secret>"
+    },
+    "users": {
+        "twitter_username": {
+            "ignore_cw": false,
+            "unlisted_word": "<word_to_unlist>",
+            "server": "<server_url_or_dns_name>",
+            "client_key": "<mastodon_client_key>",
+            "client_secret": "<mastodon_client_secret>",
+            "user_token": "<mastodon_user_token>"
+        }
+    }
+}
