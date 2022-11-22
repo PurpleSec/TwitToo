@@ -24,7 +24,7 @@ Create a config file with the details, like below:*(Fillling in any "<>")*
 *Multiple Twitter users can be added via the "users"."<twitter_username>" key*
 *with the user's Mastodon account details.*
 
-The Twitter user does **NOT** havr to be the user that has the API authentication
+The Twitter user does **NOT** have to be the user that has the API authentication
 and and additional users added do not have to be the *direct* account owner.
 
 ```json
