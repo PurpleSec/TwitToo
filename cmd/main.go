@@ -1,4 +1,4 @@
-// Copyright 2021 - 2022 PurpleSec Team
+// Copyright 2021 - 2023 PurpleSec Team
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -22,10 +22,16 @@ import (
 	"github.com/PurpleSec/twittoo"
 )
 
+var version = "unknown"
+
 func main() {
 	if len(os.Args) != 2 {
-		os.Stderr.WriteString(os.Args[0] + " <config_file>\n")
+		os.Stderr.WriteString(os.Args[0] + " [-V] <config_file>\n")
 		os.Exit(2)
+	}
+	if os.Args[1] == "-V" {
+		os.Stdout.WriteString("TwitToo: " + version + "\n")
+		os.Exit(0)
 	}
 	s, err := twittoo.New(os.ExpandEnv(os.Args[1]))
 	if err != nil {
