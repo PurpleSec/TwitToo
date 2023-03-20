@@ -38,19 +38,6 @@ type mediaType struct {
 	Name string
 }
 
-func parseTweetText(t *twitter.TweetRaw) string {
-	var (
-		v = t.Tweets[0]
-		s = html.UnescapeString(v.Text)
-	)
-	for i := range v.Entities.URLs {
-		s = strings.ReplaceAll(s, v.Entities.URLs[i].URL, v.Entities.URLs[i].ExpandedURL)
-	}
-	for i := range v.Entities.Mentions {
-		s = strings.ReplaceAll(s, v.Entities.Mentions[i].UserName, v.Entities.Mentions[i].UserName+"@twitter.com")
-	}
-	return s
-}
 func parseContentWarnings(s string) (string, bool, string) {
 	if len(s) < 2 {
 		return s, false, ""
@@ -64,6 +51,19 @@ func parseContentWarnings(s string) (string, bool, string) {
 		return s, false, ""
 	}
 	return v[i+1:], true, strings.TrimSpace(v[3:i])
+}
+func parseTweetText(v *twitter.TweetObj, t *twitter.TweetRaw) string {
+	s := html.UnescapeString(v.Text)
+	if v.Entities == nil {
+		return s
+	}
+	for i := range v.Entities.URLs {
+		s = strings.ReplaceAll(s, v.Entities.URLs[i].URL, v.Entities.URLs[i].ExpandedURL)
+	}
+	for i := range v.Entities.Mentions {
+		s = strings.ReplaceAll(s, v.Entities.Mentions[i].UserName, v.Entities.Mentions[i].UserName+"@twitter.com")
+	}
+	return s
 }
 func (s *Service) parseMedia(u account, t *twitter.TweetRaw) []int64 {
 	var (
@@ -222,7 +222,7 @@ func (s *Service) mastodon(x context.Context, g *sync.WaitGroup, c <-chan *twitt
 				break
 			}
 			s.log.Debug(`Running in the context of the user "%s" (%s).`, v.Source, v.ID)
-			b, z, w, e := parseTweetText(t), v.PossiblySensitive, "", ""
+			b, z, w, e := parseTweetText(v, t), v.PossiblySensitive, "", ""
 			if len(u.private) > 0 && strings.HasPrefix(b, u.private) {
 				b, e = strings.TrimSpace(b[len(u.private):]), "unlisted"
 			}
