@@ -33,11 +33,8 @@ and and additional users added do not have to be the *direct* account owner.
         "level": 2
     },
     "twitter": {
-        "username": "<twitter_username_no_@>",
         "consumer_key": "<twitter_consumer_key>",
-        "consumer_secret": "<twitter_consumer_secret>",
-        "access_key": "<twitter_access_key>",
-        "access_secret": "<twitter_access_secret>"
+        "consumer_secret": "<twitter_consumer_secret>"
     },
     "users": {
         "twitter_username": {
