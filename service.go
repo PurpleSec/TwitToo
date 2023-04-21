@@ -185,7 +185,7 @@ func (s *Service) twitter(x context.Context, g *sync.WaitGroup, c chan<- *twitte
 				v.ID, (len(v.Text) > 0 && v.Text[0] == '@') || len(v.InReplyToUserID) > 0, len(v.ReferencedTweets) > 0, len(v.Text), v.Source,
 				v.Source, v.ID,
 			)
-			if v.Text[0] == '@' && !isTweetSelfReply(v, n.Raw) {
+			if v.Text[0] == '@' && !isTweetSelfReply(v, n.Raw) || len(v.ReferencedTweets) > 0 {
 				s.log.Debug(`Tweet "twitter.com/%s/status/%s" is a direct reply or retweet, skipping it!`, v.Source, v.ID)
 				continue
 			}
@@ -228,6 +228,9 @@ func (s *Service) mastodon(x context.Context, g *sync.WaitGroup, c <-chan *twitt
 			}
 			if !u.ignore {
 				b, z, w = parseContentWarnings(b)
+			}
+			if x := strings.LastIndex(b, " https://twitter.com/"+v.Source+"/status/"); x > 0 {
+				b = b[:x]
 			}
 			p, err := u.client.PostStatus(madon.PostStatusParams{
 				Text:        b,
